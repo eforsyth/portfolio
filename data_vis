@@ -1,1 +1,7 @@
+# Basic data visualisation
 
+# Some data vis methods include treemapping, donut plots, comparative dot plots, and scatter plots with marginal distributions. 
+# Work is based off a project at Market Economics and includes identifying statistically significant clusters of Maori across the region (related to original M.E project). 
+# Data is simply selected 2018 census variables for SA1's across Southland.
+
+#####

@@ -1,0 +1,18 @@
+# multivariate clustering
+
+# clustering methods focus on k-means and a spatially constrained clustering method. 
+# k-means is pure attribute-space and does not consider geographic-space. can add spatial constraints forcing clusters to respect geography and produce geographically contigious clusters.
+# value of k is arbitrarily chosen
+
+# could have used k-means instead of agglomerative hierarchical clustering but didn't for reasons of fairness
+# k-means is a partitioning method where as spatially constrained clustering is a hierarchical method. thus, we use agglomerative clustering as it is also a hierarchical method
+# additionally, the agglomerative hierarchical clustering method is incorporated into our spatially constrained method
+# k-means results would be equally as geographically discontigious as the agglomerative method
+
+# libraries
+library(sf)        # for general spatial data handling
+library(rgeoda)    # for spatially constrained clustering
+library(tidyverse) # 
+
+
+#####

@@ -1,7 +1,44 @@
 # Basic data visualisation
 
-# Some data vis methods include treemapping, donut plots, comparative dot plots, and scatter plots with marginal distributions. 
+# Demonstrated methods include treemapping, donut plots, comparative dot plots, and scatter plots with marginal distributions. 
 # Work is based off a project at Market Economics and includes identifying statistically significant clusters of Maori across the region (related to original M.E project). 
 # Data is simply selected 2018 census variables for SA1's across Southland.
+
+# libraries
+library(sf)        # spatial data handling
+library(spdep)     # spatial dependency
+library(ggplot)    # data vis
+library(tidyverse) # assorted 'tidy' libraries
+
+# read in sa1 data
+data_sa1 <- read_sf("", '')
+
+# read in census data
+
+
+# identify Maori clusters
+# original project called for identification of Maori clusters for reporting and future analysis. utilised concept of spatial autocorrelation to identify clusters.
+# identified clusters were checked by local experts (including iwi members) who verified accuracy.
+
+# create spatial weights
+queen_w <- ...
+
+
+# treemaps
+# ...
+
+
+# donut plots
+# clearer variation of the (correctly) much maligned pie chart.
+
+
+# comparative dot plots
+# highlights the differences between values.
+
+
+# scatter plots
+# includes marginal distributions which provide additional visual information without cluttering the main vis panel.
+# histogram is used here, but other marginal distribution options include density and boxplots.
+
 
 #####

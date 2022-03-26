@@ -13,6 +13,10 @@ library(spatstat) # for point pattern analysis
 # read in cycle crashes
 
 
+# create quick data vis of crashes over time
+# heatmap
+
+
 # 
 
 #####

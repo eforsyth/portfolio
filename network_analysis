@@ -1,0 +1,31 @@
+# network analysis
+
+# using Python to conduct basic network analysis for Takapuna on Auckland's north shore
+# 
+# data is downloaded from openstreetmap (osm)
+
+# libraries
+import geopandas as gdp # for general spatial data handling
+import osmnx as ox      # for network analysis
+
+
+# download + clean osm network
+# cleaning network data can be onerous, so is great that this function does an excellent job doing it for us
+# specifying a driving network but can specify other transport modes, such as walking or public transit
+
+
+# route through network
+# routing from randomly selected origin nodes to random destination node
+
+
+# visualise results
+
+
+# centrality measures
+# hail from original graph theory where they assess structure of the graph
+# centrality = 
+# betweeness = how often each node is passed in a full od matrix. useful for gauging number of people passing by the node
+
+
+
+#####

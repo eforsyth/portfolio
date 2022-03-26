@@ -7,7 +7,8 @@
 # libraries
 library(sf)        # spatial data handling
 library(spdep)     # spatial dependency
-library(ggplot)    # data vis
+library(tmap)      # for quick mapping
+library(ggplot)    # gneral data vis
 library(tidyverse) # assorted 'tidy' libraries
 
 # read in sa1 data
@@ -17,11 +18,19 @@ data_sa1 <- read_sf("", '')
 
 
 # identify Maori clusters
-# original project called for identification of Maori clusters for reporting and future analysis. utilised concept of spatial autocorrelation to identify clusters.
-# identified clusters were checked by local experts (including iwi members) who verified accuracy.
+# original project called for identification of Maori clusters for reporting and future analysis. utilised local indicator of spatial autocorrelation (LISA) to identify clusters.
+# identified clusters were checked by local experts (including iwi members) who verified their accuracy.
 
 # create spatial weights
 queen_w <- ...
+
+# apply LISA
+
+
+# quickly check results
+
+
+# join classifications to census dataset
 
 
 # treemaps

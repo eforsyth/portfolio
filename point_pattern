@@ -2,6 +2,8 @@
 
 #
 
+# there are two types of point pattern analysis: density based and distance based. both of which are briefly demonstrated here.
+
 
 # libraries
 library(spatstat) # for point pattern analysis
@@ -17,6 +19,15 @@ library(spatstat) # for point pattern analysis
 # heatmap
 
 
-# 
+# density based analysis ------------------------------------
+# density based analysis deals with how the pattern pertains to an unerlying covariate
+
+
+# we will look at the density of crashes as a function of population density
+
+
+
+# distance based analysis -----------------------------------
+# with distance based analysis we look at the distribution of points relative to other points
 
 #####

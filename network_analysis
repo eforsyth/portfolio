@@ -1,27 +1,43 @@
 # network analysis
 
 # using Python to conduct basic network analysis for Takapuna on Auckland's north shore
-# 
-# data is downloaded from openstreetmap (osm)
+# includes downloading of network data from from openstreetmap (osm), cleaning and wrangling, then some basic routing
 
-# libraries
-import geopandas as gdp # for general spatial data handling
-import osmnx as ox      # for network analysis
-
-
-# download + clean osm network
-# cleaning network data can be onerous, so is great that this function does an excellent job doing it for us
-# specifying a driving network but can specify other transport modes, such as walking or public transit
+# libraries --------------------------------------------
+import osmnx as ox      # network analysis
+import geopandas as gdp # general spatial data handling
 
 
-# route through network
+# download + process osm network -----------------------
+# cleaning network data can be onerous, so is great that this function does an excellent job automatically doing it for us :)
+# specifying a driving network for argument "network_type" but can specify other transport modes, such as walking or public transit
+G = ox.graph_from_place('Auckland, New Zealand', network_type= 'drive')
+
+# download comes in wgs so reproject to nztm (rcs 2193)
+G = ox.project_graph(G, to_crs= 'EPSG:2193')
+
+# add columns for speed and travel times along edges
+G = ox.add_edge_speeds(G)
+G = ox.add_edge_travel_times(G)
+
+# plot graph to see what we downloaded
+ox.plot_graph(G, node_size = 0)
+
+# convert graph to geopandas geodata frame
+gdf_edges = ox.graph_to_gdfs(G, nodes = False)
+
+# Create lists of edge xy coordinates
+x_coord = gdf_edges.head().centroid.map(lambda x: x.coords[0][0])
+y_coord = gdf_edges.head().centroid.map(lambda x: x.coords[0][1])
+
+# route through network -------------------------------------
 # routing from randomly selected origin nodes to random destination node
 
 
-# visualise results
+# visualise results -----------------------------------------
 
 
-# centrality measures
+# centrality measures ---------------------------------------
 # hail from original graph theory where they assess structure of the graph
 # centrality = 
 # betweeness = how often each node is passed in a full od matrix. useful for gauging number of people passing by the node

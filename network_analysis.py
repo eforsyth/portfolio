@@ -21,7 +21,7 @@ G = ox.add_edge_speeds(G)
 G = ox.add_edge_travel_times(G)
 
 # plot graph to see what we downloaded
-# argument "node_size = 0" means we size the nodes to 0 and, therefore, only visualise the edges of the network
+# argument "node_size = 0" means we size the nodes to 0, effectively only visualising the edges of the network
 ox.plot_graph(G, node_size = 0)
 
 

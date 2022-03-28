@@ -45,10 +45,6 @@ route1 = ox.shortest_path(G, orig_node, dest_node, weight = 'length')
 route2 = ox.shortest_path(G, orig_node, dest_node, weight = 'travel_time')
 
 # plot the two routes to compare differences in using length vs travel time
-fig, ax = ox.plot_graph_routes(G, routes = [route1, route2], 
-                               route_colors = ['r', 'y'], 
-                               route_linewidth = 6, 
-                               node_size = 0)
-
+fig, ax = ox.plot_graph_routes(G, routes = [route1, route2], route_colors = ['r', 'y'], route_linewidth = 6, node_size = 0)
 
 # all done :)

@@ -1,6 +1,6 @@
 # network analysis
 
-# using Python to conduct basic network analysis for Takapuna on Auckland's north shore
+# using Python to conduct basic network analysis across Auckland
 # includes downloading of network data from from openstreetmap (osm), cleaning and wrangling, then some basic routing
 
 # libraries --------------------------------------------
@@ -25,7 +25,7 @@ G = ox.add_edge_travel_times(G)
 ox.plot_graph(G, node_size = 0)
 
 
-# route through network --------------------------------
+# route through network ---------------------------------
 # define origin + destination by finding nearest nodes to supplied coordinates
 # coordinates are in nztm (as we changed the crs earlier)
 dest_node = ox.distance.nearest_nodes(G, 1758060.4480746957, 5927129.813028354)

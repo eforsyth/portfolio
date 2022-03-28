@@ -24,13 +24,6 @@ G = ox.add_edge_travel_times(G)
 # argument "node_size = 0" means we size the nodes to 0 and, therefore, only visualise the edges of the network
 ox.plot_graph(G, node_size = 0)
 
-# convert graph to geopandas geodata frame
-#gdf_edges = ox.graph_to_gdfs(G, nodes = False)
-
-# Create lists of edge xy coordinates
-#x_coord = gdf_edges.head().centroid.map(lambda x: x.coords[0][0])
-#y_coord = gdf_edges.head().centroid.map(lambda x: x.coords[0][1])
-
 
 # route through network --------------------------------
 # define origin + destination by finding nearest nodes to supplied coordinates

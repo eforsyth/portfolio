@@ -31,17 +31,21 @@ x_coord = gdf_edges.head().centroid.map(lambda x: x.coords[0][0])
 y_coord = gdf_edges.head().centroid.map(lambda x: x.coords[0][1])
 
 # route through network -------------------------------------
-# routing from randomly selected origin nodes to random destination node
+# define origin + destination by finding nearest nodes to supplied coordinates
+dest_node = ox.get_nearest_node(G, (5927129.813028354, 1758060.4480746957), method= 'euclidean')
+orig_node = ox.get_nearest_node(G, (5922711.2433362715, 1761610.5863462097), method= 'euclidean')
+
+# route from orig_node to dest_node using length
+route1 = ox.shortest_path(G, orig_node, dest_node, weight = 'length')
+
+# route from orig_node to dest_node using travel time
+route2 = ox.shortest_path(G, orig_node, dest_node, weight = 'travel_time')
+
+# plot the two routes to compare differences in using length vs travel time
+fig, ax = ox.plot_graph_routes(G, routes = [route1, route2], 
+                               route_colors = ['r', 'y'], 
+                               route_linewidth = 6, 
+                               node_size = 0)
 
 
-# visualise results -----------------------------------------
-
-
-# centrality measures ---------------------------------------
-# hail from original graph theory where they assess structure of the graph
-# centrality = 
-# betweeness = how often each node is passed in a full od matrix. useful for gauging number of people passing by the node
-
-
-
-#####
+# all done :)

@@ -1,0 +1,33 @@
+# point patterns analysis
+
+#
+
+# there are two types of point pattern analysis: density based and distance based. both of which are briefly demonstrated here.
+
+
+# libraries
+library(spatstat) # for point pattern analysis
+
+
+# in contrast to the other R examples, we do not use sf here to handle our spatial data as spatstat is so old that it uses its own data structures, independent of sf
+# the spatstat syntax is closer to the base R language so can be a bit ugly...
+
+# read in cycle crashes
+
+
+# create quick data vis of crashes over time
+# heatmap
+
+
+# density based analysis ------------------------------------
+# density based analysis deals with how the pattern pertains to an unerlying covariate
+
+
+# we will look at the density of crashes as a function of population density
+
+
+
+# distance based analysis -----------------------------------
+# with distance based analysis we look at the distribution of points relative to other points
+
+#####

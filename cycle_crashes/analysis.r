@@ -11,9 +11,15 @@ library(tmap)
 tmap_mode("view")
 
 
+# nzta crashes
+# https://services.arcgis.com/CXBb7LAjgIIdcsPt/arcgis/rest/services/CAS_Data_Public/FeatureServer/0/query?outFields=*&where=1%3D1
+
+# average daily traffic counts (points)
+# https://data-atgis.opendata.arcgis.com/datasets/ATgis::average-daily-traffic-counts/explore?location=-36.912635%2C174.773565%2C15.55
+
 # read in data ------------------------------------------------------------
-# parcels with yields
-data_crashes <- get_spatial_layer("https://services2.arcgis.com/JkPEgZJGxhSjYOo0/ArcGIS/rest/services/CycleRacks_View/FeatureServer/0") %>% 
+# crashes from nzta
+data_crashes <- get_spatial_layer("https://services.arcgis.com/CXBb7LAjgIIdcsPt/arcgis/rest/services/CAS_Data_Public/FeatureServer/0/query?outFields=*&where=1%3D1") %>% 
   st_transform(2193) 
   st_centroid()
 

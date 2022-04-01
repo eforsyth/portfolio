@@ -19,7 +19,7 @@ tmap_mode("view")
 # read in data ------------------------------------------------------------
 # crashes from nzta
 data_crashes <- get_spatial_layer("https://services.arcgis.com/CXBb7LAjgIIdcsPt/arcgis/rest/services/CAS_Data_Public/FeatureServer/0/query?outFields=*&where=1%3D1") %>% 
-  st_transform(2193) 
+  st_transform(2193) %>%
   st_centroid()
 
 # create hexbins
@@ -64,6 +64,13 @@ nb_hex <- poly2nb(data_hexbin_crashes,
 lw_hex <- nb2listw(neighbours = nb_hex, 
                     style = "W", 
                     zero.policy = TRUE)
+
+lw_hex <- nb2listw(poly2nb(data_hexbin_crashes,
+                           queen = TRUE),
+                   style = "W",
+                   zero.police = TRUE)
+
+listw <- nb2listw(poly2nb(as(net_Richmond, "Spatial"), queen = TRUE))
 
 # global Moran I ----------------------------------------------------------
 # crashes_density_km2 = 0.nn

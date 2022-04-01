@@ -1,5 +1,7 @@
 # Exploring cycle craches across Auckland
 
+# main source to follow:
+# https://carto.com/blog/predicting-traffic-accident-hotspots-with-spatial-data-science/
 
 # libraries ---------------------------------------------------------------
 library(sf)
@@ -10,9 +12,6 @@ library(tmap)
 
 tmap_mode("view")
 
-
-# nzta crashes
-# https://services.arcgis.com/CXBb7LAjgIIdcsPt/arcgis/rest/services/CAS_Data_Public/FeatureServer/0/query?outFields=*&where=1%3D1
 
 # average daily traffic counts (points)
 # https://data-atgis.opendata.arcgis.com/datasets/ATgis::average-daily-traffic-counts/explore?location=-36.912635%2C174.773565%2C15.55
@@ -49,6 +48,13 @@ data_hexbin_crashes <- st_join(data_crashes,
   relocate(crashes, .before = crashes_density_km2) %>% 
   relocate(geom, .after = last_col()) %>% 
   st_as_sf()
+
+
+# temporal analysis -------------------------------------------------------
+# plot 1: line plot with daily average + seven day moving average
+# plot 2: bar/lollipop plot of accident counts by day of week
+# plot 3: bar/lollipop plot of accident counts by month
+# plot 4: temporal heatmap of accident counts by day per year
 
 
 # create spatial weight matrix --------------------------------------------
@@ -109,22 +115,16 @@ vis_LISA_scatter_plot_marginal
 
 
 # local Moran I -----------------------------------------------------------
-# for grid
-localMoran_grid <- localmoran(data_rotorua_yields_grid$infill_yield_density_km2,
-                              lw_grid,
-                              zero.policy = TRUE)
-
-# for hex
-localMoran_hex <- localmoran(data_rotorua_yields_hex$infill_yield_density_km2,
+localMoran_hex <- localmoran(data_hexbin_crashes$crashes,
                               lw_hex,
                               zero.policy = TRUE)
 
 # LISA classification
-# Re-scale yield data so mean is zero (mean-centering) & compute spatial lag
-# Use case_when to classify clusters or outliers
-# Testing for p-value of 0.01 means has <1% chance to be random result, and value can easily change be changed.
-#   E.g. 0.05 for <5%, 0.02 for <2%, or 0.001 for <0.1%
-#   Typical thresholds are 1% (0.01), 5% (0.05), and 10% (0.1)
+# re-scale crash count so mean is zero (mean-centering) & compute spatial lag
+# use case_when to classify clusters or outliers
+# testing for p-value of 0.01 means has <1% chance to be random result, and value can easily change be changed
+#   e.g. 0.05 for <5%, 0.02 for <2%, or 0.001 for <0.1%
+#   typical thresholds are 0.1% (0.001) and 1% (0.01), though 5% (0.05), and 10% (0.1) are also used
 
 p1 = 0.01
 p2 = 0.1
@@ -146,9 +146,13 @@ results_hex_crashes <- data_rotorua_yields_hex %>%
   relocate(geom, .after = last_col())
 
 # summarise LISA classification
-table(results_rotorua_infill_hex_yields$LISA_type)
+table(results_hex_crashes$LISA_type)
 
 
 # quickly map results
-qtm(results_rotorua_infill_grid_yields %>% filter(str_detect(LISA_type, "High-high")), fill = "LISA_type")
-qtm(results_rotorua_infill_hex_yields %>% filter(str_detect(LISA_type, "High-high")), fill = "LISA_type")
+qtm(results_hex_crashes %>% filter(str_detect(LISA_type, "High-high")), fill = "LISA_type")
+qtm(results_hex_crashes %>% filter(str_detect(LISA_type, "High-high")), fill = "LISA_type")
+
+
+
+#####

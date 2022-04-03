@@ -16,8 +16,10 @@ model_clustering_variables <- model_cluster_filtered_sa2 %>%
 
 
 # define spatial weights --------------------------------------------------
+# rgeoda implementation of the spdep nb + lw functions
 queen_w <- queen_weights(data_clustering_sa2)
 summary(queen_w)
+
 
 # spatially constrained clustering ----------------------------------------
 redcap_clusters <- redcap(k = 12,
@@ -44,3 +46,5 @@ results_clustering <- results_kmeans %>%
             by = "SA2_ID") %>% 
   relocate(geom, .after = last_col())
 
+
+#####

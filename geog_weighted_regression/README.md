@@ -1,3 +1,7 @@
 # Geographically weighted regression
 
-Geographically weighted regression (GWR) is a special form of regression that incorporates geographic impacts into the regression analysis regular regression assumes that the relationship(s) between predictors and the response are constant (or, in the parlance of the statistician, that the relationship is stationary). in the context of geography this translates as "I assume this relationship does not vary across sapce". gwr relaxes this asusmption by allowing the relationshp between the predictors and the response to vary across space. regular regression can be thought of, then, as a global average while gwr will tell us where the relationship diverges significantly from this average
+Geographically weighted regression (GWR) is a special form of regression that aims to account for geographic variance, or spatial heterogeneity. 
+
+Regular regression assumes that the relationship(s) between predictors and the response are constant (or, in the parlance of the statistician, that the relationship is stationary). In the context of geography this translates as "I assume this relationship does not vary across sapce". GWR relaxes this asusmption by allowing the relationshp between the predictors and the response to vary across space. 
+
+Regular regression can be thought of, then, as a global average while GWR will tell us where the relationship diverges significantly from this average.

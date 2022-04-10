@@ -1,4 +1,4 @@
-# Exploring cycle craches across Auckland
+# exploring cycle craches across Auckland
 
 # main source to follow:
 # https://carto.com/blog/predicting-traffic-accident-hotspots-with-spatial-data-science/
@@ -11,10 +11,6 @@ library(spdep)
 library(tmap)
 
 tmap_mode("view")
-
-
-# average daily traffic counts (points)
-# https://data-atgis.opendata.arcgis.com/datasets/ATgis::average-daily-traffic-counts/explore?location=-36.912635%2C174.773565%2C15.55
 
 
 # get nzta crash data -----------------------------------------------------
@@ -77,7 +73,6 @@ data_hexbin <- st_make_grid(data_crashes,
   relocate(geom, .after = last_col()) %>% 
   .[data_akl_extent,] # return only hexbins inside Auckland's terrestrial extent
 
-
 # join crashes to hexbins
 data_hexbin_crashes <- st_join(data_crashes,
                                data_hexbin,
@@ -133,38 +128,6 @@ moran.plot(data_hexbin_crashes$crashes,
            labels = FALSE,
            xlab = "Crashes per hexbin",
            ylab = "Spatially lagged crashes per hxbin")
-
-# creating a better looking Moran scatter plot with ggplot
-vis_LISA_scatter_plot <- data_hexbin_crashes %>% 
-  ggplot(aes(x = LVm2,
-             y = LVm2_lagged)) + 
-  geom_point(size = 2,
-             colour = "purple",
-             alpha = 0.1) +
-  geom_vline(xintercept = 2000,
-             linetype = "dashed") +
-  geom_hline(yintercept = 1800,
-             linetype = "dashed") +
-  geom_smooth(method = lm , 
-              color = "black", 
-              se = FALSE) +
-  labs(title = "Spatial autocorrelation of bicycle crashes across Auckland",
-       subtitle = "Global Moran's I returns a value of 0.25 (p-value = 0.001)",
-       x = "Crashes per hexbin",
-       y = "Spatially lagged crashes per hxbin") +
-  theme_ipsum(grid = FALSE)
-
-+
-  facet_wrap(~UP_ZoneGroup)
-
-vis_LISA_scatter_plot_marginal <- ggMarginal(vis_LISA_scatter_plot,
-                                             type = "histogram",
-                                             fill = "grey",
-                                             size = 10)
-
-
-vis_LISA_scatter_plot
-vis_LISA_scatter_plot_marginal
 
 
 # local Moran I -----------------------------------------------------------

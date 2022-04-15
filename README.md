@@ -1,5 +1,5 @@
 # Portfolio
 
-A simple portfolio containing examples of coding skills and applications of spatial statistical methods. Example methods cover geographically weighted regression, network analysis, point pattern analysis, clustering, and some basic data visualisation. All of the examples use R, save for network analysis, which uses Python.
+A portfolio containing examples of coding skills and applications of GIS and spatial statistical methods. Example methods encompass clustering, geographically weighted regression, working with human mobility/GPS data, network analysis, point pattern analysis, and some basic data visualisation. Examples are a mostly R with some Python included.
 
 All data comes from open sources.

@@ -49,22 +49,19 @@ qtm(data_akl_sa2_census_with_residuals,
     fill = "residuals_income") 
          
  # formally test for spatial structuring
- # utilising a method termed Global Moran's I, specifically a unique version for use with regression residuals
+ # utilising a method termed Global Moran's i, specifically a unique version for use with regression residuals
 
 # create a spatial weight matrix
-# first define who is a neighbour (nb) then ... (lw)
-nb <- poly2nb(data_akl_sa2_census_with_residuals,
-              queen = TRUE)
-
-lw <- nb2listw(nb,
+lw <- nb2listw(poly2nb(data_akl_sa2_census_with_residuals,
+                       queen = TRUE),
                style = "W",
                zero.policy = TRUE)
 
-# apply Moran's I test to linear model residuals
+# apply Moran's i test to linear model residuals
 lm.morantest(model_linear, lw)
 
-# observed Moran's I is: ...
-# interpretation is that values >0.3 is an indication of significant clustering of high and/or low residuals (i.e. systematic over- or under-prediction)
+# observed value of 0.00 is an indication of significant clustering of high and/or low residuals (i.e. systematic over- or under-prediction)
+
 
 # apply gwr ---------------------------------------------------------------
 # using gwr to account for geography and produce better analysis

@@ -2,12 +2,13 @@
 
 
 # libraries ---------------------------------------------------------------
-library(sf)        # 
+library(sf)        # spatial data handling
 library(spdep)     # Moran's I
 library(spreg)     # spatial regression models
-library(tmap)      # 
-library(tidyverse) # 
+library(tmap)      # mapping
+library(tidyverse) # assorted 'tidy' libraries
 
+# switch tmap from static to interactive mapping
 tmap_mode("view")
 
 
@@ -19,19 +20,15 @@ tmap_mode("view")
 
 
 # linear regression -------------------------------------------------------
+# define regression equation
+model_equation <-
 
-
+# create linear regression model
 model_linear <- lm(...,
                    data = as_tibble(data_akl_sa2_census))
 
 # summarise results of linear model
 summary(regression_income)
-
-
-# test residuals for spatial strucutres
-# presence of any structure is bad as means model is systematically over- or under-predicting
-# when the residual is negative, the observed value is lower than predicted (over-prediction)
-# when the residual is positive, the observed value is higher than the predicted (under-prediction)
 
 # add response and residual as columns
 data_akl_sa2_census_with_residuals <- data_akl_sa2_census %>% 
@@ -41,9 +38,11 @@ data_akl_sa2_census_with_residuals <- data_akl_sa2_census %>%
 # quickly map residuals
 qtm(data_akl_sa2_census_with_residuals,
     fill = "residuals_income") 
-         
- # formally test for spatial structuring
- # utilising a method termed Global Moran's i, specifically a unique version for use with regression residuals
+
+# test residuals for spatial strucutres with global Moran's i
+# presence of any structure is bad as means model is systematically over- or under-predicting
+# when the residual is negative, the observed value is lower than predicted (over-prediction)
+# when the residual is positive, the observed value is higher than the predicted (under-prediction)
 
 # create a spatial weight matrix
 lw <- nb2listw(poly2nb(data_akl_sa2_census_with_residuals,
@@ -59,7 +58,6 @@ lm.morantest(model_linear, lw)
 
 # apply gwr ---------------------------------------------------------------
 # using gwr to account for geography and produce better analysis
-
 
 
 # apply Moran's I to gwr residuals

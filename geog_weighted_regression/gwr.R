@@ -28,12 +28,12 @@ model_linear <- lm(...,
                    data = as_tibble(data_akl_sa2_census))
 
 # summarise results of linear model
-summary(regression_income)
+summary(model_linear)
 
 # add response and residual as columns
 data_akl_sa2_census_with_residuals <- data_akl_sa2_census %>% 
-  mutate(predicted_income = fitted(regression_income),
-         residuals_income = residuals(regression_income))
+  mutate(predicted_income = fitted(model_linear),
+         residuals_income = residuals(model_linear))
          
 # quickly map residuals
 qtm(data_akl_sa2_census_with_residuals,

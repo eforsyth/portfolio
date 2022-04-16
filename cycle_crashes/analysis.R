@@ -110,7 +110,7 @@ model_weights_queen_hex <- nb2listw(poly2nb(data_hexbin_crashes,
 
 # global Moran I ----------------------------------------------------------
 # value for bicycle crashes = 0.25 (p-value of 0.001)
-# evidence of significant clustering across space, meaning pattern is not driven by random process(es)
+# evidence of clustering across space, meaning pattern is not driven by random process(es)
 moran.mc(data_hexbin_crashes$crashes,
          listw = model_weights_queen_hex, 
          nsim = 999, 

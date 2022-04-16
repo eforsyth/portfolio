@@ -13,7 +13,7 @@ import osmnx as ox # network analysis
 
 G = ox.graph_from_place('Auckland, New Zealand', network_type= 'drive')
 
-# download comes in wgs so reproject to nztm (rcs 2193)
+# download comes in wgs so reproject to nztm (crs 2193)
 G = ox.project_graph(G, to_crs= 'EPSG:2193')
 
 # add columns for speed and travel times along edges

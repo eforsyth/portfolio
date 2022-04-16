@@ -6,7 +6,6 @@
 # libraries --------------------------------------------
 import osmnx as ox # network analysis
 
-
 # download + process osm network -----------------------
 # defining download extent by a query of the osm api. could alternatively supply a polygon to overlay or create a bounding box
 # specifying a driving network for argument "network_type" but can specify other transport modes, such as walking or public transit
@@ -25,14 +24,13 @@ G = ox.add_edge_travel_times(G)
 # argument "node_size = 0" means we size the nodes to 0, effectively only visualising the edges of the network
 ox.plot_graph(G, node_size = 0)
 
-
 # route through network ---------------------------------
 # define origin + destination by finding nearest nodes to supplied coordinates
 # coordinates are in nztm (as we changed the crs earlier)
 dest_node = ox.distance.nearest_nodes(G, 1758060.4480746957, 5927129.813028354)
 orig_node = ox.distance.nearest_nodes(G, 1761610.5863462097, 5922711.2433362715)
 
-# route from orig_node to dest_node using length as edg weight
+# route from orig_node to dest_node using length as edge weight
 route1 = ox.shortest_path(G, orig_node, dest_node, weight = 'length')
 
 # route from orig_node to dest_node using travel time as edge weight

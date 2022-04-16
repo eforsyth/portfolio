@@ -53,17 +53,18 @@ lw <- nb2listw(poly2nb(data_akl_sa2_census_with_residuals,
 # apply Moran's i test to linear model residuals
 lm.morantest(model_linear, lw)
 
-# observed value of 0.00 is an indication of significant clustering of high and/or low residuals (i.e. systematic over- or under-prediction)
+# observed value of 0.00 for linear model
+# indication of significant clustering of high and/or low residuals (i.e. systematic over- or under-prediction)
 
 
 # apply gwr ---------------------------------------------------------------
 # using gwr to account for geography and produce better analysis
 
 
-# apply Moran's I to gwr residuals
+# apply Moran's i test to gwr residuals
 lm.morantest(model_gwr, lw)
 
-# observed Moran's I is: ...
+# observed value is 0.00 for gwr model
 # is now below the 0.3 threshold 
 
 

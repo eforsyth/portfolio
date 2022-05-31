@@ -1,5 +1,6 @@
 # exploring cycle craches across Auckland
 
+
 # libraries ---------------------------------------------------------------
 library(sf)
 library(tidyverse)
@@ -7,6 +8,7 @@ library(httr)
 library(spdep)
 library(tmap)
 
+# switch tmap to interactive plotting
 tmap_mode("view")
 
 
@@ -91,14 +93,11 @@ qtm(data_hexbin_crashes %>% filter(crashes > 0), fill = "crashes")
 
 
 # temporal analysis -------------------------------------------------------
-# plot 1: line plot with daily average + seven day moving average
-# plot 2: bar/lollipop plot of accident counts by day of week
-# plot 3: bar/lollipop plot of accident counts by month
-# plot 4: temporal heatmap of accident counts by day per year
 # unfortunately crashes are only recorded to the year so is little temporal analysis to be done
 
 
 # create spatial weight matrix --------------------------------------------
+# here we are defning what a neighbour is and how we quantify their impact
 model_weights_queen_hex <- nb2listw(poly2nb(data_hexbin_crashes,
                                             queen = TRUE),
                                     style = "W",

@@ -1,8 +1,5 @@
 # exploring cycle craches across Auckland
 
-# main source to follow:
-# https://carto.com/blog/predicting-traffic-accident-hotspots-with-spatial-data-science/
-
 # libraries ---------------------------------------------------------------
 library(sf)
 library(tidyverse)

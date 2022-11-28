@@ -1,7 +1,7 @@
 # Portfolio
 
-A portfolio containing examples of coding skills and applications of spatial data handling and geographic data science methods. Examples encompass geodemographics, geographically weighted regression, working with human mobility (GPS) data, network analysis, point pattern analysis, and urban morphology. Examples are a mostly R with some Python included.
+A portfolio containing examples of coding skills and applications of spatial data handling and geographic data science methods. [The main directory covers identifying geographic clusters of cycle crashes in Auckland](https://github.com/eforsyth/portfolio/tree/main/cycle_crashes), while [the miscellaneous directory](https://github.com/eforsyth/portfolio/tree/main/assorted) that includes assorted little tasks.
 
-All data comes from open sources. Some come directly from various API's accessed in the scripts, others are downloaded prior and bundled into the data folder.
+Examples are a mostly R with some Python included.
 
 Is still very much a work in progress...

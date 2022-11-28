@@ -1,0 +1,62 @@
+# grabbing the data from the nzta api
+
+# libraries ---------------------------------------------------------------
+library(sf)
+library(tidyverse)
+library(httr)
+library(tmap)
+
+# setting tmap to interactive plotting
+tmap_mode("view")
+
+# get nzta crash data -----------------------------------------------------
+# build query as url
+url_crashes       <- parse_url("https://services.arcgis.com/CXBb7LAjgIIdcsPt/arcgis/rest/services")
+url_crashes$path  <- paste(url_crashes$path, "CAS_Data_Public/FeatureServer/0/query", sep = "/")
+url_crashes$query <- list(where = "tlaName = 'Auckland' AND crashYear >= 2016 AND bicycle > 0",
+                          outFields = "bicycle, crashYear, tlaName, crashSeverity, minorInjuryCount, seriousInjuryCount, fatalCount, speedLimit",
+                          returnGeometry = "true",
+                          f = "geojson")
+
+request_crashes <- build_url(url_crashes) # what our final url request looks like
+
+# grab response from the API
+data_crashes <- read_sf(request_crashes) %>% 
+  st_transform(2193) %>% 
+  select(
+    crashYear, bicycle, speedLimit, crashSeverity, 
+    minorInjuryCount, seriousInjuryCount, fatalCount
+    ) %>% 
+  drop_na() %>% 
+  st_as_sf()
+
+# looks to be a lot of data in the table which could undoubtedly be useful, but will just focus on some basic columns to keep things simple
+
+# make a quick interactive map of the response
+qtm(data_crashes)
+
+# get ancillary data ------------------------------------------------------
+# auckland land area
+url_akl       <- parse_url("https://services1.arcgis.com/n4yPwebTjJCmXB6W/arcgis/rest/services")
+url_akl$path  <- paste(url_akl$path, "Base_Region/FeatureServer/0/query", sep = "/")
+url_akl$query <- list(where = "STATUS = 'Land'",
+                  outFields = "STATUS", 
+                  returnGeometry = "true",
+                  f = "geojson")
+
+# created object url_traffic for demonstrative purposes
+# here we bundle the final url building into the read_sf function
+data_akl_extent <- read_sf(build_url(url_akl)) %>% 
+  st_transform(2193)
+
+# peak daily traffic counts
+# column count_date is unix timestamp
+url_traffic       <- parse_url("https://services2.arcgis.com/JkPEgZJGxhSjYOo0/arcgis/rest/services")
+url_traffic$path  <- paste(url_traffic$path, "TrafficService/FeatureServer/0/query", sep = "/")
+url_traffic$query <- list(where = "count_date >= '2016-01-01 00:00:00' AND peaktraffic IS NOT NULL",
+                          outFields = "count_date, peaktraffic",
+                          returnGeometry = "true",
+                          f = "geojson")
+
+data_traffic <- read_sf(build_url(url_traffic)) %>% 
+  st_transform(2193)

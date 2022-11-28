@@ -1,14 +1,20 @@
-# Cycle crashes
+# Cycle crash clusters
 
-This little project aims to explore the spatial distribution of cycle crashes across Auckland.
+This little project aims to explore the spatial distribution of cycle crashes across Auckland. In doing so we cover various geographic data science based approaches to the task, and highlight how even a relatively simple sounding task can encompass a bunch of methodological issues and technical work. Specifically we cover point pattern, data mining, and spatial autocorrelation measures. To briefly summarise each:
 
-The approach taken involves aggregating the crash point events to a generated hexbin tesselation. Aggregating the points in this manner offers a different approach to the explicit point pattern methods covered in the point pattern analysis section. 
+- The point pattern approach ... 
+- The data mining approach uses DBSCAN to discover dense clusters of crashes, as defined by a density function.
+- The spatial autocorrelation approach involves first aggregating the crash events to a generated hexbin tesselation before using Monte Carlo (i.e. randomised) simulations to identify clusters of unexpectedly high counts.
+
+Note that we use crash counts/events. Using crash rates may also yield addional insight, however it's too much effort at the time of writing, but could be added at some point in the future.
 
 <!-- 
 
 demo **(ADD LINK?)**. 
 
-# main source to follow:
+# spatial autocorrelation approach:
 # https://carto.com/blog/predicting-traffic-accident-hotspots-with-spatial-data-science/
 
+# dbscan approach:
+# https://towardsdatascience.com/mapping-the-uks-traffic-accident-hotspots-632b1129057b
 -->

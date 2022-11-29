@@ -5,6 +5,8 @@ library(sf)
 library(tidyverse)
 # for density-based data mining tools
 library(dbscan)
+# for h3 hexbin index
+library(h3jsr)
 
 # apply dbscan ------------------------------------------------------------
 # this approach uses a common data mining technique called density based spatial clustering application with noise (dbscan).
@@ -34,7 +36,48 @@ result_dbscan_crashes <- data_crashes %>%
   # rename the added column
   rename(dbscan_cluster = model_dbscan.cluster)
 
-# create basic interactive map showing only clustered points
-qtm(y %>% filter(dbscan_cluster > 0))
+# create a basic interactive map showing only clustered points
+qtm(result_dbscan_crashes %>% filter(dbscan_cluster > 0))
+
+# add a column identifying whether a point is deemed part of a cluster or noise
+result_dbscan_crashes <- data_crashes %>% 
+  mutate(is_cluster = if_else(dbscan_cluster > 0, "cluster", "noise"))
+
+# create a second interactive map showing clustered + noise points
+tm_shape(result_dbscan_crashes ) +
+  tm_dots(col = "is_cluster", 
+          # colour by created column
+          palette = c(cluster = 'cyan', 
+                      noise   = 'grey'))
+
+# aggregate to h3 hexbins -------------------------------------------------
+
+# h3 is in wgs84, or crs 4326
+# selecting only clustered points before reprojecting crs
+result_dbscan_crashes_wgs84 <- result_dbscan_crashes %>% 
+  filter(dbscan_cluster > 0) %>% 
+  st_transform(4326)
+
+# get resolution 11 hexagons that intersect points
+# resolution 11 is ~50m across and an area of ~0.002 km2
+
+# find h3 cells that intersect the clustered points
+process_hexes_1 <- point_to_cell(result_dbscan_crashes_wgs84, res = 11, simple = FALSE)
+# get the selected cell geometries as sf objects
+process_hexes_2 <- cell_to_polygon(unlist(process_hexes_1[, 'h3_resolution_11'], use.names = FALSE), simple = FALSE)
+
+# create a map of the intersecting cells
+qtm(process_hexes_2)
+
+# we may want to generalise the pattern a bit by buffering to include the immediate neighbouring cells
+# use the h3 index to grab the immediate neighbours
+process_hexes_3 <- get_ring(process_hexes_2, ring_size = 1, simple = FALSE)
+# get the selected cell geometries as sf objects
+process_hexes_4 <- cell_to_polygon(unlist(process_hexes_3, use.names = FALSE), simple = FALSE)
+
+# create a map of the buffered cells
+qtm(process_hexes_4)
+
+# now we have the h3 cells as sf objects, we can simply run a spatial join to get a count per cell
 
 #

@@ -14,8 +14,8 @@ library(h3jsr)
 
 model_dbscan <- dbscan(
   data_crashes %>%
-    # we need only the xy coordinates as seperate columns so that the algorithm can calculate the
-    # euclidean (straight line) distance between events. so will extract them from the geometry column
+    # we need only the xy coordinates as seperate columns so that the algorithm can calculate the euclidean (straight line) distance between events 
+    # so will extract them from the geometry column
     mutate(
       x = unlist(map(data_crashes$geometry,1)),
       y = unlist(map(data_crashes$geometry,2))) %>%

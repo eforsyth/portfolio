@@ -64,6 +64,8 @@ result_dbscan_crashes_wgs84 <- result_dbscan_crashes %>%
 
 # we will now get h3 resolution 11 hexagons that intersect points
 # resolution 11 is ~50m across and an area of ~0.002 km2
+# resolutions 0-15 are available, with 0 being huge and 15 tiny
+# see source for further details: https://h3geo.org/docs/core-library/restable/
 
 # find h3 cells that intersect the clustered points
 process_hexes_1 <- point_to_cell(result_dbscan_crashes_wgs84, res = 11, simple = FALSE)
@@ -75,7 +77,9 @@ qtm(process_hexes_2)
 
 # we may want to generalise the pattern a bit by buffering to include the immediate neighbouring cells
 # use the h3 index to grab the immediate neighbours
-process_hexes_3 <- get_ring(process_hexes_2, ring_size = 1, simple = FALSE)
+process_hexes_3 <- get_ring(process_hexes_2, 
+                            ring_size = 1, 
+                            simple = FALSE)
 # get the selected cell geometries as sf objects
 process_hexes_4 <- cell_to_polygon(unlist(process_hexes_3, use.names = FALSE), simple = FALSE)
 
@@ -83,7 +87,40 @@ process_hexes_4 <- cell_to_polygon(unlist(process_hexes_3, use.names = FALSE), s
 qtm(process_hexes_4)
 
 # now we have the h3 cells as sf objects, we can run a spatial join to get a count of crashes per cell
+result_h3_cell <- result_dbscan_crashes_wgs84 %>% 
+  st_join(process_hexes_2, 
+          join = st_within) %>% 
+  # drop geometry, thus converting to a table object
+  # do this as r will otherwise try to dissolve the geometries, which we don't want to do
+  # wouldn't be an issue here, but can sometimes take a good while to dissolve complex shapes 
+  st_drop_geometry() %>% 
+  # summarise crashes per h3 cell + retain dbscan cluster id
+  group_by(h3_address) %>% 
+  summarise(sum_crashes = sum(bicycle),
+            hdbscan_cluster = first(dbscan_cluster)) %>%  
+  # join summarised counts back to cell geometry
+  left_join(process_hexes_2,
+            by = "h3_address") %>% 
+  # convert to sf object
+  st_as_sf() %>% 
+  # transform projection back to nztm/crs 2193
+  st_transform(2193)
 
+# basic interactive map
+qtm(result_h3_cell)
 
+# it's trivial to aggregate the values to the entire dbscan cluster
+# equivalent of the gis dissolve operation
+result_h3_cell_dissolved <- result_h3_cell %>% 
+  group_by(hdbscan_cluster) %>% 
+  # summarise the crashes per cluster id
+  # as it is a sf object, r will automatically dissolve the geometries
+  # can take a while for more complex geometries, but shouldn't be an issue for this small dataset
+  summarise(sum_crashes = sum(sum_crashes))
+
+# check map to see that it worked
+qtm(result_h3_cell_dissolved)
+
+# this can also be easily repeated for the buffered/generalised shapes for process_hexes_4
 
 #

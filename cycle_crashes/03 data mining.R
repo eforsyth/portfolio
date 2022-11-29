@@ -25,13 +25,16 @@ model_dbscan <- dbscan(
     select(x, y),
   # hyperparameter #1: minimum number of points
   # hyperparameter #2: distance threshold (in m, as per our crs)
-  # so, to be a cluster, a crash needs at least two (each point counting itself in this calculation) other crashes <= 50m from itself
+  # to be a cluster, then, a crash needs at least two (each point counting itself in this calculation) other crashes <= 50m from itself
+  # euclidean (straight line) distance is computed by function, but could calculate the network distance between each crash and feed that 
+  # distance matrix into dbscan as well
   minPts = 3,
   eps = 50)
 
 # join the results back to the sf data
 result_dbscan_crashes <- data_crashes %>% 
   # cbind == column bind, will bind the selected column to the df, provided both are of the same length
+  # as the source for both df's is the data_crashes df, they should line up unless something have gone very super badly wrong
   cbind(model_dbscan$cluster) %>% 
   # rename the added column
   rename(dbscan_cluster = model_dbscan.cluster)
@@ -53,12 +56,13 @@ tm_shape(result_dbscan_crashes ) +
 # aggregate to h3 hexbins -------------------------------------------------
 
 # h3 is in wgs84, or crs 4326
-# selecting only clustered points before reprojecting crs
 result_dbscan_crashes_wgs84 <- result_dbscan_crashes %>% 
+  # selecting only clustered points  
   filter(dbscan_cluster > 0) %>% 
+  # reprojecting crs
   st_transform(4326)
 
-# get resolution 11 hexagons that intersect points
+# we will now get h3 resolution 11 hexagons that intersect points
 # resolution 11 is ~50m across and an area of ~0.002 km2
 
 # find h3 cells that intersect the clustered points
@@ -78,6 +82,8 @@ process_hexes_4 <- cell_to_polygon(unlist(process_hexes_3, use.names = FALSE), s
 # create a map of the buffered cells
 qtm(process_hexes_4)
 
-# now we have the h3 cells as sf objects, we can simply run a spatial join to get a count per cell
+# now we have the h3 cells as sf objects, we can run a spatial join to get a count of crashes per cell
+
+
 
 #
